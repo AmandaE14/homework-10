@@ -85,7 +85,6 @@ class UserController
             exit();
         }
 
-        //no built-in super global for PUT
         parse_str(file_get_contents('php://input'), $_PUT);
 
         $inputData = [
@@ -93,7 +92,6 @@ class UserController
             'lastName' => $_PUT['lastName'] ? $_PUT['lastName'] : false,
         ];
         $userData = $this->validateUser($inputData);
-        //we could save the data off to be saved here
 
         $user = new User();
         $user->updateUser(

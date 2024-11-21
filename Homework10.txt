@@ -1,0 +1,5 @@
+1. PHP Data Objects, or PDO for short, is a built-in class that handles the connection and makes database interactions in PHP easier. Data Source Names, or DSNs, are strings that hold connection information and are often kept in secure .env files.
+2. While .gitignore files specify files to be ignored by Git, like .env files, to prevent exposing sensitive data, .env files contain environment variables with sensitive information.
+3. To avoid security breaches, users should never submit personal information, including passwords, to GitHub.
+4. A vulnerability known as SQL injection enables attackers to alter a database by using inadequately secured input data to enter malicious SQL commands.
+5. Prepared statements keep data and SQL code apart, preventing SQL injection. Placeholders are used to generate a SQL statement, which is then bound and run using secure data inputs.

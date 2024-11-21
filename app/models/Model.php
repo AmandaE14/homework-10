@@ -7,8 +7,10 @@ use PDOException;
 
 abstract class Model {
 
+    protected $table;
+
     public function findAll() {
-        $query = "select * from $this->table";
+        $query = "SELECT * FROM $this->table";
         return $this->fetchAll($query);
     }
 
@@ -18,13 +20,10 @@ abstract class Model {
         $port = '8889';
         $charset = 'utf8mb4';
 
-//      some of these are optional
-        $dsn = "$type:hostname=" . DBHOST .";dbname=" . DBNAME . ";port=$port;charset=$charset";
+        $dsn = "$type:hostname=" . DBHOST . ";dbname=" . DBNAME . ";port=$port;charset=$charset";
 
         $options = [
-            //we can set the error mode, to throw exceptions or PDO type errors
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            //set the default fetch type
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ];
 
@@ -39,22 +38,18 @@ abstract class Model {
     public function fetch($query) {
         $connectedPDO = $this->connect();
         $statementObject = $connectedPDO->query($query);
-        //no params, one row
         return $statementObject->fetch();
     }
 
     public function fetchAll($query) {
         $connectedPDO = $this->connect();
         $statementObject = $connectedPDO->query($query);
-        //no params, multiple rows
         return $statementObject->fetchAll();
     }
 
     public function fetchAllWithParams($query, $data = []) {
         $connection = $this->connect();
-        //prepare statement -
         $statementObject = $connection->prepare($query);
-        //data needs
         $successOrFail = $statementObject->execute($data);
         if ($successOrFail) {
             $result = $statementObject->fetchAll(PDO::FETCH_OBJ);
@@ -65,4 +60,16 @@ abstract class Model {
         return false;
     }
 
+    public function fetchOneWithParams($query, $data = []) {
+        $connection = $this->connect();
+        $statementObject = $connection->prepare($query);
+        $statementObject->execute($data);
+        return $statementObject->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function executeWithParams($query, $data = []) {
+        $connection = $this->connect();
+        $statementObject = $connection->prepare($query);
+        return $statementObject->execute($data);
+    }
 }
